@@ -1,0 +1,26 @@
+{
+  "name": "cucumber-junit-parser",
+  "version": "1.0.0",
+  "description": "parse and submit junit result of a cucumber project to qTest Manager",
+  "main": "parse.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phuthanhta/cucumber-junit-parser.git"
+  },
+  "keywords": [
+    "qTest",
+    "cucumber"
+  ],
+  "author": "Phu Ta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phuthanhta/cucumber-junit-parser/issues"
+  },
+  "homepage": "https://github.com/phuthanhta/cucumber-junit-parser#readme",
+  "dependencies": {
+    "gherkin": "^6.0.15"
+  }
+}
