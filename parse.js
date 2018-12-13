@@ -4,7 +4,7 @@ const globby = require('globby');
 const fs = require('fs');
 const xml2js = require('xml2js');
 const archiver = require('archiver');
-const projectPath = normalizePath(process.env.PROJECT_DIR || '');
+const projectPath = normalizePath(process.env.WORKING_DIR || '');
 let featurePath = normalizePath(process.env.FEATURE_PATH || projectPath);
 const packageJson = require("./package.json");
 if (featurePath && !featurePath.endsWith('/')) {
@@ -120,7 +120,7 @@ async function getScenarios(options) {
   let _featureScanPattern = _options.featureScanPattern || featureScanPattern;
 
   if (!_projectPath || !fs.lstatSync(_projectPath).isDirectory()) {
-    throw 'projectPath is not set or invalid value';
+    throw 'process.env.WORKING_DIR - working directory: is not set or invalid value';
   }
   let featureFiles = scanDirWithPattern({
     path: _featurePath,
