@@ -18,12 +18,14 @@ const timestamp = new Date();
 const STATUS_SKIP = 'SKIP';
 const STATUS_FAIL = 'FAIL';
 const STATUS_PASS = 'PASS';
+const CALLBACKS = process.env.callbacks || {};
 function normalizePath(strPath) {
   if (!strPath) {
     return strPath;
   }
   return strPath.replace(/\\/g, '/');
 };
+
 
 function streamToArray(readableStream) {
   return new Promise((resolve, reject) => {
@@ -35,6 +37,18 @@ function streamToArray(readableStream) {
     readableStream.on('end', () => resolve(items))
   })
 };
+
+function cloneTestSuite(testSuite) {
+  return {
+    info: testSuite.$,
+    testCases: testSuite.testcase.map(i => {
+      return {
+        name: i.$.name,
+        failure: i.failure
+      }
+    })
+  }
+} 
 
 function xml2JSON(xmlFilePath) {
   return new Promise((resolve, reject) => {
@@ -218,7 +232,7 @@ async function parse(pathToTestResult, options) {
       return s.name === tsName;
     })
     if (scenario) {
-      let tcObj = buildTestResult(testSuite, scenario);
+      let tcObj = CALLBACKS.buildTestResult ? CALLBACKS.buildTestResult(cloneTestSuite(testSuite), scenario) : buildTestResult(testSuite, scenario);
       if (tcObj && !resultMap.has(tcObj.automation_content)) {
         tcObj.order = order++;
         resultMap.set(tcObj.automation_content, tcObj);
