@@ -210,6 +210,7 @@ function scanDirWithPattern(scanOptions) {
 async function parse(pathToTestResult, options) {
   console.log(` == Parser name: ${packageJson.name}, version ${packageJson.version} ==`);
   console.log(options);
+  let customCallbacks = options.callbacks || {};
   console.log(`Path to test result: '${pathToTestResult}'`);
   let resultFiles = scanDirWithPattern({
     path: pathToTestResult,
@@ -239,7 +240,7 @@ async function parse(pathToTestResult, options) {
       return s.name === tsName;
     })
     if (scenario) {
-      let tcObj = options.CALLBACKS.buildTestResult ? options.CALLBACKS.buildTestResult(cloneTestSuite(testSuite), scenario) : buildTestResult(testSuite, scenario);
+      let tcObj = customCallbacks.buildTestResult ? customCallbacks.buildTestResult(cloneTestSuite(testSuite), scenario) : buildTestResult(testSuite, scenario);
       if (tcObj && !resultMap.has(tcObj.automation_content)) {
         tcObj.order = order++;
         resultMap.set(tcObj.automation_content, tcObj);
