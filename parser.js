@@ -1,4 +1,5 @@
 'use strict';
+exports.id = 'cucumber-parser';
 const gherkin = require('gherkin');
 const globby = require('globby');
 const fs = require('fs');
@@ -10,15 +11,16 @@ const packageJson = require("./package.json");
 if (featurePath && !featurePath.endsWith('/')) {
   featurePath = featurePath.concat('/');
 }
+
+
 const featureScanPattern = process.env.FEATURE_SCAN_PATTERN || '**/*.feature';
-const isDebug = process.env.DEBUG || false;
+const isDebug = (process.env.DEBUG || "false") === "true";
 const stopWhenError = process.env.STOP_WHEN_ERROR || true;
 const timestamp = new Date();
 
 const STATUS_SKIP = 'SKIP';
 const STATUS_FAIL = 'FAIL';
 const STATUS_PASS = 'PASS';
-const CALLBACKS = process.env.callbacks || {};
 function normalizePath(strPath) {
   if (!strPath) {
     return strPath;
@@ -48,7 +50,7 @@ function cloneTestSuite(testSuite) {
       }
     })
   }
-} 
+}
 
 function xml2JSON(xmlFilePath) {
   return new Promise((resolve, reject) => {
@@ -92,12 +94,12 @@ function buildTestResult(xmlResultObj, scenarioObj) {
       order: 0,
       status: status,
       description: scenarioObj.name,
-      expected_result: (scenarioObj.steps.map(i => { 
+      expected_result: (scenarioObj.steps.map(i => {
         return `${i.keyword}${i.text}`
       })).join('\n')
     }]
   };
-  
+
   if (failureCount) {
     let failures = xmlResultObj.testcase.filter(tc => {
       return tc.failure;
@@ -190,7 +192,9 @@ function scanDirWithPattern(scanOptions) {
   if (!fs.existsSync(scanPath)) {
     throw new Error(`Scan path not exists: ${scanPath}`);
   }
-  console.log(`Scanning path ${scanPath} - with pattern ${scanOptions.pattern}`);
+  if (isDebug) {
+    console.log(`Scanning path ${scanPath} - with pattern ${scanOptions.pattern}`);
+  }
   if (fs.statSync(scanPath).isFile()) {
     return [scanPath];
   }
@@ -205,7 +209,8 @@ function scanDirWithPattern(scanOptions) {
 
 async function parse(pathToTestResult, options) {
   console.log(` == Parser name: ${packageJson.name}, version ${packageJson.version} ==`);
-  console.log("Path to test result: " + pathToTestResult);
+  console.log(options);
+  console.log(`Path to test result: '${pathToTestResult}'`);
   let resultFiles = scanDirWithPattern({
     path: pathToTestResult,
     pattern: '**/*.xml'
@@ -217,7 +222,9 @@ async function parse(pathToTestResult, options) {
   let resultMap = new Map();
   let order = 1;
   for (let rf of resultFiles) {
-    console.log(`Parsing ${rf} ...`);
+    // if (isDebug) {
+    //   console.log(`Parsing ${rf} ...`);
+    // }
     let parseFileResult = undefined;
     try {
       parseFileResult = await xml2JSON(rf);
@@ -232,13 +239,15 @@ async function parse(pathToTestResult, options) {
       return s.name === tsName;
     })
     if (scenario) {
-      let tcObj = CALLBACKS.buildTestResult ? CALLBACKS.buildTestResult(cloneTestSuite(testSuite), scenario) : buildTestResult(testSuite, scenario);
+      let tcObj = options.CALLBACKS.buildTestResult ? options.CALLBACKS.buildTestResult(cloneTestSuite(testSuite), scenario) : buildTestResult(testSuite, scenario);
       if (tcObj && !resultMap.has(tcObj.automation_content)) {
         tcObj.order = order++;
         resultMap.set(tcObj.automation_content, tcObj);
       }
     }
-    console.log(`Finish parsing ${rf}`);
+    if (isDebug) {
+      console.log(`Finish parsing ${rf}`);
+    }
   }
   return (Array.from(resultMap.values()));
 }
@@ -255,3 +264,4 @@ module.exports = {
   getScenarios,
   parse
 };
+
