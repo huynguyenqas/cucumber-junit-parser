@@ -22,7 +22,6 @@
   "homepage": "https://github.com/phuthanhta/cucumber-junit-parser#readme",
   "dependencies": {
     "archiver": "^3.0.0",
-    "gherkin": "^6.0.15",
     "globby": "^8.0.1",
     "xml2js": "^0.4.19"
   }
