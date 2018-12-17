@@ -9,7 +9,6 @@ if ($TESTCASES_AC && 0 < $TESTCASES_AC.length) {
 let command = `mvn -Dcucumber.options="${cucumberOptions}" clean test`;
 
 console.log(`=== executing command ===`);
-
 console.log(command)
 execSync(command, {stdio: "inherit"});
 console.log(`=== command completed ===`)
