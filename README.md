@@ -2,6 +2,9 @@
 A sample how to parse jUnit result of cucumber project
 # How to use
 The project will be packaged and added as a custom parser on qTest Launch
+### Clone this project
+### Go to cloned folder run $npm install
+### Package the folder and follow the link to submit custom parser [https://support.qasymphony.com/hc/en-us/articles/360004568852-qTest-Launch-Settings](./https://support.qasymphony.com/hc/en-us/articles/360004568852-qTest-Launch-Settings)
 # What it does
 ## Parse JUnit result for cucumber project
 Each scenario will be a test case on qTest Manager, test case name is scenaraio name, scenario steps will be test steps of the test case
