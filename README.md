@@ -4,9 +4,7 @@ A sample how to parse jUnit result of cucumber project
 The project will be packaged and added as a custom parser on qTest Launch
 # What it does
 ## Parse JUnit result for cucumber project
-Each scenario will be a test case on qTest Manager
-Test case name is scenaraio name
-Scenario steps will be test steps of the test case
+Each scenario will be a test case on qTest Manager, test case name is scenaraio name, scenario steps will be test steps of the test case
 # How to make automation host execute only scheduled test runs
 ### 1. On agent creation UI, select Universal Agent type
 ### 2. Specify cucumber project path
