@@ -36,7 +36,7 @@ function xml2JSON(xmlFilePath) {
 };
 
 function buildTestResult(xmlResultObj, resultFilePath) {
-  let name = `${resultFilePath}${xmlResultObj.$.name}`;
+  let name = xmlResultObj.$.name;
   let exe_start_date = new Date(timestamp);
   let exe_end_date = new Date(timestamp);
   exe_end_date.setSeconds(exe_start_date.getSeconds() + (parseInt(xmlResultObj.$.time || 0, 10)));
