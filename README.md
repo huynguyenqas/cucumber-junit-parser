@@ -1,5 +1,9 @@
 # cucumber-junit-parser
 A sample how to parse jUnit result of cucumber project
+# Prerequisite
+1. The Cucumber project used in this article is stored on github at [https://github.com/QASymphony/cucumber-sample](https://github.com/QASymphony/cucumber-sample)
+2. You machine needs to have Java installed. The Java version should be the one compatible with what you use to run your Cucumber project
+3. This example use Maven to execute the tests, so make sure you install maven to the automation host machine
 # How to use
 The project will be packaged and added as a custom parser on qTest Launch
 1. Clone this project
