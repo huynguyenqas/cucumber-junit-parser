@@ -49,6 +49,9 @@ function buildTestResult(xmlResultObj, resultFilePath) {
   } else if (skippedCount) {
     status = STATUS_SKIP;
   }
+  let testcases = xmlResultObj.testcase.filter((item) => {
+    return item.$.name !== name;
+  })
   let testCase = {
     status,
     name,
@@ -56,7 +59,7 @@ function buildTestResult(xmlResultObj, resultFilePath) {
     exe_start_date: exe_start_date.toISOString(),
     exe_end_date: exe_end_date.toISOString(),
     automation_content: xmlResultObj.$.name,
-    test_step_logs: xmlResultObj.testcase.map((item, order) => {
+    test_step_logs: testcases.map((item, order) => {
       return {
         order,
         status,
